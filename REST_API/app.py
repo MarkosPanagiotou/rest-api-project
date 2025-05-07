@@ -63,43 +63,28 @@ def query_example():
 
     return 'User Added!'
 
-@app.route('/delete_custom_users',methods=['DELETE'])
-def query_example():
-    # if key doesn't exist, returns None
-    username = request.args.get('username')
-
-    # if key doesn't exist, returns a 400, bad request error
-    password = request.args.get('password')
-
-    # if key doesn't exist, returns None
-    email = request.args.get('email')
-
-
+@app.route('/users/<int:id>', methods=['DELETE'])
+def delete_user(id):
     cursor = mysql.connection.cursor()
-    cursor.execute("REMOVE INTO users (username, email, password) VALUES  (%s, %s, %s)", (username,email,password))
+    cursor.execute("DELETE FROM users WHERE id = %s", (id,))
     mysql.connection.commit()
     cursor.close()
+    return 'User Deleted!'
 
-    return 'User Removed!'
-
-@app.route('/UPDATE_custom_users',methods=['UPDATE'])
-def query_example():
-    # if key doesn't exist, returns None
-    username = request.args.get('username')
-
-    # if key doesn't exist, returns a 400, bad request error
-    password = request.args.get('password')
-
-    # if key doesn't exist, returns None
-    email = request.args.get('email')
-
+# PUT (Update) user by ID
+@app.route('/users/<int:id>', methods=['PUT'])
+def update_user(id):
+    data = request.get_json()
+    username = data.get('username')
+    email = data.get('email')
+    password = data.get('password')
 
     cursor = mysql.connection.cursor()
-    cursor.execute("UPDATE INTO users (username, email, password) VALUES  (%s, %s, %s)", (username,email,password))
+    cursor.execute("UPDATE users SET username=%s, email=%s, password=%s WHERE id=%s", 
+                   (username, email, password, id))
     mysql.connection.commit()
     cursor.close()
-
-    return 'User UPDATED!'
+    return 'User Updated!
 
 
  
