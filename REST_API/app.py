@@ -63,6 +63,44 @@ def query_example():
 
     return 'User Added!'
 
+@app.route('/delete_custom_users',methods=['DELETE'])
+def query_example():
+    # if key doesn't exist, returns None
+    username = request.args.get('username')
+
+    # if key doesn't exist, returns a 400, bad request error
+    password = request.args.get('password')
+
+    # if key doesn't exist, returns None
+    email = request.args.get('email')
+
+
+    cursor = mysql.connection.cursor()
+    cursor.execute("REMOVE INTO users (username, email, password) VALUES  (%s, %s, %s)", (username,email,password))
+    mysql.connection.commit()
+    cursor.close()
+
+    return 'User Removed!'
+
+@app.route('/UPDATE_custom_users',methods=['UPDATE'])
+def query_example():
+    # if key doesn't exist, returns None
+    username = request.args.get('username')
+
+    # if key doesn't exist, returns a 400, bad request error
+    password = request.args.get('password')
+
+    # if key doesn't exist, returns None
+    email = request.args.get('email')
+
+
+    cursor = mysql.connection.cursor()
+    cursor.execute("UPDATE INTO users (username, email, password) VALUES  (%s, %s, %s)", (username,email,password))
+    mysql.connection.commit()
+    cursor.close()
+
+    return 'User UPDATED!'
+
 
  
 
